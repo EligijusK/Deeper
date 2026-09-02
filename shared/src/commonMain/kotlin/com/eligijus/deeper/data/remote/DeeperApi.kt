@@ -17,8 +17,9 @@ import kotlin.coroutines.cancellation.CancellationException
 
 class DeeperApi (
     private val client: HttpClient
-) {
-    suspend fun login(
+): DeeperApiInterface {
+
+    override suspend fun login(
         email: String,
         password: String
     ): ApiResult<LoginResponseDto> {
@@ -68,7 +69,7 @@ class DeeperApi (
         }
     }
 
-    suspend fun getBathymetry(
+    override suspend fun getBathymetry(
         scanId: Long,
         token: String
     ): ApiResult<BathymetryResponseDto> {

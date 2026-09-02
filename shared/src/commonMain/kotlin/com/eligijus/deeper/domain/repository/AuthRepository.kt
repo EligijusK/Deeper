@@ -3,6 +3,7 @@ package com.eligijus.deeper.domain.repository
 import com.eligijus.deeper.data.mapper.toDomain
 import com.eligijus.deeper.data.remote.ApiResult
 import com.eligijus.deeper.data.remote.DeeperApi
+import com.eligijus.deeper.data.remote.DeeperApiInterface
 import com.eligijus.deeper.domain.request.RequestError
 import com.eligijus.deeper.domain.request.LoginRequestOutcome
 import com.eligijus.deeper.domain.request.LoginRequestOutcome.*
@@ -10,7 +11,7 @@ import com.eligijus.deeper.domain.model.LoginResult
 import com.eligijus.deeper.domain.repository.`interface`.AuthRepositoryInterface
 
 class AuthRepository(
-    private val api: DeeperApi
+    private val api: DeeperApiInterface
 ) : AuthRepositoryInterface {
 
     override suspend fun login(
