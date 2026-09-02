@@ -1,4 +1,4 @@
-package com.eligijus.deeper.data.remote.dto
+package com.eligijus.deeper.data.remote.dto.login
 
 import kotlinx.serialization.Serializable
 

@@ -1,7 +1,7 @@
-package com.eligijus.deeper.data.remote.dto
+package com.eligijus.deeper.data.remote.dto.login
 
 import kotlinx.serialization.Serializable
-import io.ktor.serialization.serialize;
+
 @Serializable
 data class LoginRequestDto(
     val email: String,

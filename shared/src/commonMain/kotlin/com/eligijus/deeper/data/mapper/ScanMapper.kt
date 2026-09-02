@@ -1,6 +1,6 @@
 package com.eligijus.deeper.data.mapper
 
-import com.eligijus.deeper.data.remote.dto.ScanDto
+import com.eligijus.deeper.data.remote.dto.login.ScanDto
 import com.eligijus.deeper.domain.model.Scan
 
 fun ScanDto.toDomain(): Scan {

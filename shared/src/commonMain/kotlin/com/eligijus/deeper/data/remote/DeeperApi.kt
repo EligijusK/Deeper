@@ -1,7 +1,7 @@
 package com.eligijus.deeper.data.remote
 
-import com.eligijus.deeper.data.remote.dto.LoginRequestDto
-import com.eligijus.deeper.data.remote.dto.LoginResponseDto
+import com.eligijus.deeper.data.remote.dto.login.LoginRequestDto
+import com.eligijus.deeper.data.remote.dto.login.LoginResponseDto
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.request.post
