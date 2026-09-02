@@ -36,7 +36,7 @@ class DeeperApi (
             when {
                 response.status.isSuccess() -> {
                     ApiResult.Success(
-                        response.body()
+                        response.body<LoginResponseDto>()
                     )
                 }
 

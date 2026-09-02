@@ -10,13 +10,3 @@ sealed interface LoginError {
     data object UnknownError : LoginError
 }
 
-sealed interface LoginOutcome {
-
-    data class Success(
-        val result: LoginResult
-    ) : LoginOutcome
-
-    data class Failure(
-        val error: LoginError
-    ) : LoginOutcome
-}

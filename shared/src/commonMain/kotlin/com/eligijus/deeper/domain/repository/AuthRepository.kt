@@ -1,11 +1,13 @@
 package com.eligijus.deeper.domain.repository
 
+import com.eligijus.deeper.data.mapper.toDomain
 import com.eligijus.deeper.data.remote.ApiResult
 import com.eligijus.deeper.data.remote.DeeperApi
 import com.eligijus.deeper.domain.auth.LoginError
 import com.eligijus.deeper.domain.auth.LoginOutcome
 import com.eligijus.deeper.domain.auth.LoginOutcome.*
 import com.eligijus.deeper.domain.model.LoginResult
+import com.eligijus.deeper.domain.repository.`interface`.AuthRepositoryInterface
 
 class AuthRepository(
     private val api: DeeperApi
@@ -25,11 +27,13 @@ class AuthRepository(
             is ApiResult.Success -> {
                 val response = result.data
 
-                Success(
+                LoginOutcome.Success(
                     LoginResult(
                         token = response.login.token,
                         userId = response.login.userId,
-                        scans = response.scans
+                        scans = response.scans.map {
+                            it.toDomain()
+                        }
                     )
                 )
             }

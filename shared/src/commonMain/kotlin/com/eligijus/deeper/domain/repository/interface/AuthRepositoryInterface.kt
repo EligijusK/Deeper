@@ -1,4 +1,5 @@
-package com.eligijus.deeper.domain.repository
+package com.eligijus.deeper.domain.repository.`interface`
+
 import com.eligijus.deeper.domain.auth.LoginOutcome
 
 interface AuthRepositoryInterface {

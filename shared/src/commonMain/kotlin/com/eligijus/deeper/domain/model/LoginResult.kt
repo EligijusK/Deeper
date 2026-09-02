@@ -5,5 +5,5 @@ import com.eligijus.deeper.data.remote.dto.ScanDto
 data class LoginResult(
     val token: String,
     val userId: Long,
-    val scans: List<ScanDto>
+    val scans: List<Scan>
 )

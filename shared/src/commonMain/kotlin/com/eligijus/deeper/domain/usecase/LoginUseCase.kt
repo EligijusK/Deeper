@@ -1,7 +1,7 @@
 package com.eligijus.deeper.domain.usecase
 
 import com.eligijus.deeper.domain.auth.LoginOutcome
-import com.eligijus.deeper.domain.repository.AuthRepositoryInterface
+import com.eligijus.deeper.domain.repository.`interface`.AuthRepositoryInterface
 
 class LoginUseCase (
     private val authRepositoryInterface: AuthRepositoryInterface
