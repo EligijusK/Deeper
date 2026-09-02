@@ -2,9 +2,13 @@ package com.eligijus.deeper.presentation.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.eligijus.deeper.domain.request.LoginRequestOutcome
 import com.eligijus.deeper.domain.usecase.LoginUseCase
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -17,6 +21,12 @@ class LoginViewModel (
 
     val uiState: StateFlow<LoginUiState> =
         _uiState.asStateFlow()
+
+    private val _events =
+        MutableSharedFlow<LoginEvent>()
+
+    val events: SharedFlow<LoginEvent> =
+        _events.asSharedFlow()
 
     fun onEmailChanged(email: String) {
         _uiState.update {
@@ -37,7 +47,13 @@ class LoginViewModel (
     }
 
     fun login() {
+        val state = _uiState.value
+        if (!state.canLogin) {
+            return
+        }
+
         viewModelScope.launch {
+
             _uiState.update {
                 it.copy(
                     isLoading = true,
@@ -45,10 +61,37 @@ class LoginViewModel (
                 )
             }
 
-            val result = loginUseCase(
-                email = uiState.value.email,
-                password = uiState.value.password
-            )
+            when (
+                val result = loginUseCase(
+                    email = state.email,
+                    password = state.password
+                )
+            ) {
+                is LoginRequestOutcome.Success -> {
+
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false
+                        )
+                    }
+
+                    _events.emit(
+                        LoginEvent.Success(
+                            result.result
+                        )
+                    )
+                }
+
+                is LoginRequestOutcome.Failure -> {
+
+                    _uiState.update {
+                        it.copy(
+                            isLoading = false,
+                            errorMessage = result.error.toString()
+                        )
+                    }
+                }
+            }
         }
     }
 }

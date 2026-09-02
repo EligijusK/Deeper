@@ -10,11 +10,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.eligijus.deeper.domain.model.Scan
 
 @Composable
 fun ScanListScreen(
-    scans: List<ScanUiModel>,
-    onScanClick: (ScanUiModel) -> Unit,
+    scans: List<Scan>,
+    onScanClick: (Scan) -> Unit,
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -39,12 +40,12 @@ fun ScanListScreen(
 @Composable
 private fun ScanListScreenPreview() {
     MaterialTheme {
-        val scanList: List<ScanUiModel> = listOf<ScanUiModel> (
-            ScanUiModel(1, "Test", "2025-05-10", "15:00", 5),
-            ScanUiModel(2, "Test1", "2025-05-10", "14:00", 5),
-            ScanUiModel(3, "Test2", "2025-05-10", "18:00", 5),
-            ScanUiModel(4, "Test3", "2025-05-10", "13:00", 5),
-            ScanUiModel(5, "Test4", "2025-05-10", "05:00", 5)
+        val scanList: List<Scan> = listOf<Scan> (
+            Scan(1, 55.277287, 21.328197, "", null, 1, 0),
+            Scan(1, 55.277287, 21.328197, "", null, 1, 0),
+            Scan(1, 55.277287, 21.328197, "", null, 1, 0),
+            Scan(1, 55.277287, 21.328197, "", null, 1, 0),
+            Scan(1, 55.277287, 21.328197, "", null, 1, 0)
         )
 
         ScanListScreen(scanList, {}, Modifier)

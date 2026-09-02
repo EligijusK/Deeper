@@ -7,5 +7,7 @@ data class LoginUiState(
     val errorMessage: String? = null
 ) {
     val canLogin: Boolean
-        get() = email.isNotBlank() && password.isNotBlank()
+        get() = email.isNotBlank() &&
+                password.isNotBlank() &&
+                !isLoading
 }

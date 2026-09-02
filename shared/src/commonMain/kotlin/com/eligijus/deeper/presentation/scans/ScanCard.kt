@@ -12,10 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.eligijus.deeper.domain.model.Scan
 
 @Composable
 fun ScanCard(
-    scan: ScanUiModel,
+    scan: Scan,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -27,9 +28,7 @@ fun ScanCard(
             modifier = Modifier.padding(16.dp)
         ) {
             Text(
-                text = scan.name.ifBlank {
-                    "Unnamed scan"
-                },
+                text = scan.name.toString(),
                 style = MaterialTheme.typography.titleMedium
             )
 
@@ -38,7 +37,7 @@ fun ScanCard(
             )
 
             Text(
-                text = "${scan.date} • ${scan.time}",
+                text = "${scan.date}",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -60,7 +59,7 @@ fun ScanCard(
 @Composable
 private fun ScanCardPreview() {
     MaterialTheme {
-        val scanUiModel: ScanUiModel = ScanUiModel(1, "Test", "2025-05-10", "15:00", 5)
+        val scanUiModel: Scan = Scan(1, 55.277287, 21.328197, "", null, 1, 0)
         ScanCard(scanUiModel, {}, Modifier)
     }
 }
