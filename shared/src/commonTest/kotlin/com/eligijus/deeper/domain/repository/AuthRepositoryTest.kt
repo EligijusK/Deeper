@@ -107,6 +107,25 @@ class AuthRepositoryTest {
     }
 
     @Test
+    fun loginReturnsInvalidCredentialsWhenApiReturnsForbidden() = runTest {
+
+        fakeApi.loginResult = ApiResult.Forbidden
+
+        val result = repository.login(
+            email = "wrong@test.com",
+            password = "wrong"
+        )
+
+        val failure =
+            assertIs<LoginRequestOutcome.Failure>(result)
+
+        assertEquals(
+            expected = RequestError.AccessForbidden,
+            actual = failure.error
+        )
+    }
+
+    @Test
     fun loginReturnsServerErrorWhenApiReturnsServerError() = runTest {
 
         fakeApi.loginResult = ApiResult.ServerError
