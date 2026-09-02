@@ -3,38 +3,28 @@ package com.eligijus.deeper.domain.repository
 import com.eligijus.deeper.data.mapper.toDomain
 import com.eligijus.deeper.data.remote.ApiResult
 import com.eligijus.deeper.data.remote.DeeperApi
+import com.eligijus.deeper.domain.repository.`interface`.ScanRepositoryInterface
+import com.eligijus.deeper.domain.request.BathymetryRequestOutcome
+import com.eligijus.deeper.domain.request.BathymetryRequestOutcome.*
 import com.eligijus.deeper.domain.request.RequestError
-import com.eligijus.deeper.domain.request.LoginRequestOutcome
-import com.eligijus.deeper.domain.request.LoginRequestOutcome.*
-import com.eligijus.deeper.domain.model.LoginResult
-import com.eligijus.deeper.domain.repository.`interface`.AuthRepositoryInterface
 
-class AuthRepository(
-    private val api: DeeperApi
-) : AuthRepositoryInterface {
+data class BathymetryRepository(
+    private val deeperApi: DeeperApi
+): ScanRepositoryInterface {
 
-    override suspend fun login(
-        email: String,
-        password: String
-    ): LoginRequestOutcome {
-
+    override suspend fun getBathymetry(
+        scanId: Long,
+        token: String
+    ): BathymetryRequestOutcome {
         return when (
-            val result = api.login(
-                email = email,
-                password = password
+            val result = deeperApi.getBathymetry(
+                scanId = scanId,
+                token = token
             )
         ) {
             is ApiResult.Success -> {
-                val response = result.data
-
-                LoginRequestOutcome.Success(
-                    LoginResult(
-                        token = response.login.token,
-                        userId = response.login.userId,
-                        scans = response.scans.map {
-                            it.toDomain()
-                        }
-                    )
+                Success(
+                    result = result.data.toDomain()
                 )
             }
 
@@ -43,7 +33,6 @@ class AuthRepository(
                     RequestError.InvalidCredentials
                 )
             }
-
             ApiResult.Forbidden -> {
                 Failure(
                     RequestError.AccessForbidden
@@ -67,6 +56,9 @@ class AuthRepository(
                     RequestError.UnknownError
                 )
             }
+
+
         }
     }
+
 }

@@ -1,6 +1,6 @@
 package com.eligijus.deeper.domain.model
 
-data class BathymetryPolygon(
-    val depth: Double,
+data class BathymetryGeometry(
+    val boundingBox: BoundingBox?,
     val coordinates: List<GeoPoint>
 )

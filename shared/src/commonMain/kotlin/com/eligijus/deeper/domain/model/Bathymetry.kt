@@ -1,5 +1,7 @@
 package com.eligijus.deeper.domain.model
 
 data class Bathymetry(
-    val polygons: List<BathymetryPolygon>
+    val boundingBox: BoundingBox?,
+    val features: List<BathymetryFeature>,
+    val scansGeoData: List<ScanGeoData>
 )

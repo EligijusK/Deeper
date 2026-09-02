@@ -5,7 +5,7 @@ import com.eligijus.deeper.domain.model.Bathymetry
 sealed interface BathymetryOutcomeInterface {
 
     data class Success(
-        val data: Bathymetry
+        val data: Bathymetry?
     ) : BathymetryOutcomeInterface
 
 //    data class Failure(

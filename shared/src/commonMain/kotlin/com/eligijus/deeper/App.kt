@@ -14,9 +14,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.eligijus.deeper.data.remote.ApiResult
 import com.eligijus.deeper.data.remote.DeeperApi
 import com.eligijus.deeper.data.remote.HttpClientFactory
 import com.eligijus.deeper.domain.repository.AuthRepository
+import com.eligijus.deeper.domain.repository.BathymetryRepository
+import com.eligijus.deeper.domain.request.BathymetryRequestOutcome
+import com.eligijus.deeper.domain.request.LoginRequestOutcome
 import org.jetbrains.compose.resources.painterResource
 import deeper.shared.generated.resources.Res
 import deeper.shared.generated.resources.compose_multiplatform
@@ -33,6 +37,7 @@ fun App() {
         }
         val api: DeeperApi = DeeperApi(client)
         val authRepository: AuthRepository = AuthRepository(api)
+        val bathRepository: BathymetryRepository = BathymetryRepository(api)
         Column(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.primaryContainer)
@@ -44,8 +49,51 @@ fun App() {
                 Text("Click me!")
             }
             Button(onClick = {  scope.launch {
-                val res = authRepository.login("deeperangler@gmail.com", "Deeper10899")
-                println(res)
+                val resAuth = authRepository.login("deeperangler@gmail.com", "Deeper10899")
+                when (resAuth) {
+                    is LoginRequestOutcome.Success -> {
+                        val token = resAuth.result.token
+                        println(resAuth.result.scans)
+                        val scan = resAuth.result.scans.firstOrNull()
+
+                        if (scan == null) {
+                            println("No scans found")
+                            return@launch
+                        }
+
+                        println("Login successful")
+                        println("Token: $token")
+                        println("Scan ID: ${scan.id}")
+
+                        when (
+                            val bathymetryOutcome =
+                                bathRepository.getBathymetry(
+                                    scanId = scan.id,
+                                    token = token
+                                )
+                        ) {
+                            is BathymetryRequestOutcome.Success -> {
+                                println("Bathymetry request successful")
+                                println(bathymetryOutcome.result)
+                                println(bathymetryOutcome.result.features)
+
+                            }
+
+                            is BathymetryRequestOutcome.Failure -> {
+                                println(
+                                    "Bathymetry request failed: ${bathymetryOutcome.error}"
+                                )
+                            }
+
+                        }
+
+                    }
+                    is LoginRequestOutcome.Failure -> {
+                        println(
+                            "Login failed: ${resAuth.error}"
+                        )
+                    }
+                }
 
             } }) {
                 Text("Test KTOr")
