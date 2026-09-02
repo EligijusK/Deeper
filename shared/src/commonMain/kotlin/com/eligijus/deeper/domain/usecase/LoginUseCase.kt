@@ -1,16 +1,16 @@
 package com.eligijus.deeper.domain.usecase
 
-import com.eligijus.deeper.domain.model.LoginResult
-import com.eligijus.deeper.domain.repository.AuthRepository
+import com.eligijus.deeper.domain.auth.LoginOutcome
+import com.eligijus.deeper.domain.repository.AuthRepositoryInterface
 
 class LoginUseCase (
-    private val authRepository: AuthRepository
+    private val authRepositoryInterface: AuthRepositoryInterface
 ) {
     suspend operator fun invoke(
         email: String,
         password: String
-    ): Result<LoginResult> {
-        return authRepository.login(
+    ): LoginOutcome {
+        return authRepositoryInterface.login(
             email = email.trim(),
             password = password
         )

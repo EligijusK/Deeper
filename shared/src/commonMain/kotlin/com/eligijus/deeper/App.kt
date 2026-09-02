@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.eligijus.deeper.data.remote.DeeperApi
 import com.eligijus.deeper.data.remote.HttpClientFactory
+import com.eligijus.deeper.domain.repository.AuthRepositoryInterfaceImpl
 import org.jetbrains.compose.resources.painterResource
 import deeper.shared.generated.resources.Res
 import deeper.shared.generated.resources.compose_multiplatform
@@ -31,6 +32,7 @@ fun App() {
             HttpClientFactory.create()
         }
         val api: DeeperApi = DeeperApi(client)
+        val authRepository: AuthRepositoryInterfaceImpl = AuthRepositoryInterfaceImpl(api)
         Column(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.primaryContainer)
@@ -41,9 +43,14 @@ fun App() {
             Button(onClick = { showContent = !showContent }) {
                 Text("Click me!")
             }
-            Button(onClick = {  scope.launch { api.login("deeperangler@gmail.com", "Deeper10899")} }) {
+            Button(onClick = {  scope.launch {
+                val res = authRepository.login("deeperangle@gmail.com", "Deeper10899")
+                println(res)
+
+            } }) {
                 Text("Test KTOr")
             }
+
             AnimatedVisibility(showContent) {
                 val greeting = remember { Greeting().greet() }
                 Column(

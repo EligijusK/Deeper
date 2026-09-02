@@ -49,19 +49,6 @@ class LoginViewModel (
                 email = uiState.value.email,
                 password = uiState.value.password
             )
-
-            result
-                .onSuccess {
-                    // Later: navigate / expose successful login event
-                }
-                .onFailure { error ->
-                    _uiState.update {
-                        it.copy(
-                            errorMessage = error.message,
-                            isLoading = false
-                        )
-                    }
-                }
         }
     }
 }
