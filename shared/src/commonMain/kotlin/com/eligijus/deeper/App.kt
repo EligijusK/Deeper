@@ -46,6 +46,7 @@ fun App() {
             useCaseModule
         )
     }), content = {
+        val loginUseCase = koinInject<LoginUseCase>()
         MaterialTheme {
             val scope = rememberCoroutineScope()
             var showContent by remember { mutableStateOf(false) }
@@ -67,12 +68,12 @@ fun App() {
                 }
                 Button(onClick = {
                     scope.launch {
-                        val resAuth = authRepository.login("deeperangler@gmail.com", "Deeper10899")
-                        when (resAuth) {
+                        val result = loginUseCase.invoke("deeperangler@gmail.com", "Deeper10899")
+                        when (result) {
                             is LoginRequestOutcome.Success -> {
-                                val token = resAuth.result.token
-                                println(resAuth.result.scans)
-                                val scan = resAuth.result.scans.firstOrNull()
+                                val token = result.result.token
+                                println(result.result.scans)
+                                val scan = result.result.scans.firstOrNull()
 
                                 if (scan == null) {
                                     println("No scans found")
@@ -109,7 +110,7 @@ fun App() {
 
                             is LoginRequestOutcome.Failure -> {
                                 println(
-                                    "Login failed: ${resAuth.error}"
+                                    "Login failed: ${result.error}"
                                 )
                             }
                         }
