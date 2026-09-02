@@ -20,7 +20,7 @@ data class ScanDto(
     val id: Long,
     val lat: Double,
     val lon: Double,
-    val name: String,
+    val name: String?,
     val date: String?,
     val scanPoints: Int,
     val mode: Int

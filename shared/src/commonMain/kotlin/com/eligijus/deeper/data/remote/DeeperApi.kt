@@ -17,7 +17,7 @@ class DeeperApi (
         password: String
     ): LoginResponseDto {
 
-        return client.post(
+        val response = client.post(
             "https://bathus.staging.deeper.eu/api/login"
         ) {
             contentType(ContentType.Application.Json)
@@ -28,6 +28,9 @@ class DeeperApi (
                     password = password
                 )
             )
-        }.body()
+
+        }
+        println("HTTP status: ${response.status}")
+        return response.body()
     }
 }

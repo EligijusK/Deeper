@@ -14,16 +14,23 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.eligijus.deeper.data.remote.DeeperApi
+import com.eligijus.deeper.data.remote.HttpClientFactory
 import org.jetbrains.compose.resources.painterResource
-
 import deeper.shared.generated.resources.Res
 import deeper.shared.generated.resources.compose_multiplatform
+import kotlinx.coroutines.launch
 
 @Composable
 @Preview
 fun App() {
     MaterialTheme {
+        val scope = rememberCoroutineScope()
         var showContent by remember { mutableStateOf(false) }
+        val client = remember {
+            HttpClientFactory.create()
+        }
+        val api: DeeperApi = DeeperApi(client)
         Column(
             modifier = Modifier
                 .background(MaterialTheme.colorScheme.primaryContainer)
@@ -33,6 +40,9 @@ fun App() {
         ) {
             Button(onClick = { showContent = !showContent }) {
                 Text("Click me!")
+            }
+            Button(onClick = {  scope.launch { api.login("deeperangler@gmail.com", "Deeper10899")} }) {
+                Text("Test KTOr")
             }
             AnimatedVisibility(showContent) {
                 val greeting = remember { Greeting().greet() }
