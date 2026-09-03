@@ -54,6 +54,7 @@ actual fun BathymetryMap(
             mapLoaded = true
         }
     ) {
+        bathymetry.scansGeoData
         bathymetry.features.forEach { feature ->
 
             val points = feature.geometry.coordinates.map { point ->
