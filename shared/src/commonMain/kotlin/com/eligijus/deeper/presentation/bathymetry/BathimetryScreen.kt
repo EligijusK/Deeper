@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -25,6 +26,7 @@ import org.jetbrains.compose.resources.painterResource
 @Composable
 fun BathymetryScreen(
     scan: Scan,
+    state: BathymetryUiState,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -54,6 +56,32 @@ fun BathymetryScreen(
                 .padding(paddingValues)
         ) {
 
+            when {
+                state.isLoading -> {
+                    CircularProgressIndicator()
+                    println("Is Loading")
+                }
+
+                state.errorMessage != null -> {
+                    Text(
+                        text = state.errorMessage
+                    )
+                }
+
+                state.bathymetry != null -> {
+                    Text("Bathymetry loaded")
+                    println("data: ${state.bathymetry?.features?.size}")
+                    Text(
+                        text = "Features: ${state.bathymetry.features.size}"
+                    )
+
+                    Text(
+                        text = "Geo data: ${state.bathymetry.scansGeoData.size}"
+                    )
+                }
+            }
+
+
             // Temporary map placeholder
             Box(
                 modifier = Modifier
@@ -80,6 +108,6 @@ fun BathymetryScreen(
 private fun BathymetryScreenPreview() {
     MaterialTheme {
         val scan = Scan(1, 55.277287, 21.328197, "", null, 1, 0)
-        BathymetryScreen(scan, {}, Modifier)
+        BathymetryScreen(scan, BathymetryUiState(), {}, Modifier)
     }
 }

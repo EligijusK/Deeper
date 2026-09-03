@@ -2,6 +2,7 @@ package com.eligijus.deeper.presentation.bathymetry
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.eligijus.deeper.data.mapper.toMessage
 import com.eligijus.deeper.domain.request.BathymetryRequestOutcome
 import com.eligijus.deeper.domain.request.LoginRequestOutcome
 import com.eligijus.deeper.domain.usecase.BathymetryUseCase
@@ -15,11 +16,8 @@ class BathymetryViewModel(
     private val bathymetryUseCase: BathymetryUseCase
 ) : ViewModel() {
 
-    private val _uiState =
-        MutableStateFlow(BathymetryUiState())
-
-    val uiState =
-        _uiState.asStateFlow()
+    private val _uiState = MutableStateFlow(BathymetryUiState())
+    val uiState = _uiState.asStateFlow()
 
     fun loadBathymetry(
         scanId: Long,
@@ -53,7 +51,7 @@ class BathymetryViewModel(
                     _uiState.update {
                         it.copy(
                             isLoading = false,
-                            errorMessage = result.error.toString()
+                            errorMessage = result.error.toMessage()
                         )
                     }
                 }
