@@ -15,6 +15,8 @@ import com.google.android.gms.maps.model.LatLngBounds
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.Polygon
 import com.google.maps.android.compose.rememberCameraPositionState
+import com.google.maps.android.compose.Marker
+import com.google.maps.android.compose.rememberUpdatedMarkerState
 
 @Composable
 actual fun BathymetryMap(
@@ -24,24 +26,42 @@ actual fun BathymetryMap(
     val cameraPositionState = rememberCameraPositionState()
     var mapLoaded by remember { mutableStateOf(false) }
     val bounds = bathymetry.boundingBox
+    val startLocation =
+        bathymetry.scansGeoData.firstOrNull()?.let { scan ->
+            scan.startLocation
+                ?: scan.coordinates.firstOrNull()
+        }
 
     LaunchedEffect(mapLoaded, bounds) {
-        if (mapLoaded && bounds != null) {
-            val latLngBounds = LatLngBounds(
-                LatLng(
-                    bounds.minLatitude,
-                    bounds.minLongitude
-                ),
-                LatLng(
-                    bounds.maxLatitude,
-                    bounds.maxLongitude
+        if (bathymetry.features.isNotEmpty()) {
+            if (mapLoaded && bounds != null) {
+                val latLngBounds = LatLngBounds(
+                    LatLng(
+                        bounds.minLatitude,
+                        bounds.minLongitude
+                    ),
+                    LatLng(
+                        bounds.maxLatitude,
+                        bounds.maxLongitude
+                    )
                 )
-            )
 
+                cameraPositionState.animate(
+                    CameraUpdateFactory.newLatLngBounds(
+                        latLngBounds,
+                        80
+                    )
+                )
+            }
+        }
+        else if (startLocation != null) {
             cameraPositionState.animate(
-                CameraUpdateFactory.newLatLngBounds(
-                    latLngBounds,
-                    80
+                CameraUpdateFactory.newLatLngZoom(
+                    LatLng(
+                        startLocation.latitude,
+                        startLocation.longitude
+                    ),
+                    16f
                 )
             )
         }
@@ -54,24 +74,45 @@ actual fun BathymetryMap(
             mapLoaded = true
         }
     ) {
-        bathymetry.scansGeoData
-        bathymetry.features.forEach { feature ->
+        if (bathymetry.features.isNotEmpty()) {
 
-            val points = feature.geometry.coordinates.map { point ->
-                LatLng(
-                    point.latitude,
-                    point.longitude
-                )
-            }
+            bathymetry.features
+                .sortedBy { it.depth }
+                .forEach { feature ->
 
-            if (points.size >= 3) {
-                Polygon(
-                    points = points,
-                    fillColor = depthColor(feature.depth),
-                    strokeColor = depthStrokeColor(feature.depth),
-                    strokeWidth = 1f
-                )
+                val points = feature.geometry.coordinates.map { point ->
+                    LatLng(
+                        point.latitude,
+                        point.longitude
+                    )
+                }
+
+                if (points.size >= 3) {
+                    Polygon(
+                        points = points,
+                        fillColor = depthColor(feature.depth),
+                        strokeColor = depthStrokeColor(feature.depth),
+                        strokeWidth = 1f,
+                        zIndex = feature.depth.toFloat()
+                    )
+                }
             }
+        }
+        if (startLocation != null) {
+
+            val markerPosition = LatLng(
+                startLocation.latitude,
+                startLocation.longitude
+            )
+
+            val markerState = rememberUpdatedMarkerState(
+                position = markerPosition
+            )
+
+            Marker(
+                state = markerState,
+                title = "Scan location"
+            )
         }
     }
 }
