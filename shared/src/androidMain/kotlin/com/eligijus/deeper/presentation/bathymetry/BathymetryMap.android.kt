@@ -63,14 +63,14 @@ actual fun BathymetryMap(
                 )
             }
 
-//            if (points.size >= 3) {
-//                Polygon(
-//                    points = points,
-//                    fillColor = depthColor(feature.depth),
-//                    strokeColor = depthStrokeColor(feature.depth),
-//                    strokeWidth = 1f
-//                )
-//            }
+            if (points.size >= 3) {
+                Polygon(
+                    points = points,
+                    fillColor = depthColor(feature.depth),
+                    strokeColor = depthStrokeColor(feature.depth),
+                    strokeWidth = 1f
+                )
+            }
         }
     }
 }
