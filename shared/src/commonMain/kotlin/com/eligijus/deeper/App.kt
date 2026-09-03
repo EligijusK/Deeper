@@ -22,6 +22,7 @@ import com.eligijus.deeper.di.presentationModule
 import com.eligijus.deeper.di.repositoryModule
 import com.eligijus.deeper.di.useCaseModule
 import com.eligijus.deeper.domain.model.LoginResult
+import com.eligijus.deeper.domain.model.Scan
 import com.eligijus.deeper.domain.repository.AuthRepository
 import com.eligijus.deeper.domain.repository.BathymetryRepository
 import com.eligijus.deeper.domain.request.BathymetryRequestOutcome
@@ -95,8 +96,8 @@ fun App() {
                         scans = currentRoute.loginResult.scans,
                         onScanClick = { scan ->
                             route = AppRoute.Bathymetry(
-                                scan = scan,
-                                token = currentRoute.loginResult.token
+                                scan = scan, // Scan(2434165, 54.70320881442833, 25.157326583218417, "", null, 231, 2), // scan,
+                                token = currentRoute.loginResult.token //"sZVBFabi7jtI1RV7qIOBrXdotIIXuDIq" // currentRoute.loginResult.token
                             )
                         }
                     )
@@ -113,8 +114,8 @@ fun App() {
                     currentRoute.token
                 ) {
                     bathymetryViewModel.loadBathymetry(
-                        scanId = currentRoute.scan.id,
-                        token = currentRoute.token
+                        scanId = currentRoute.scan.id, //2434165,
+                        token = currentRoute.token //"sZVBFabi7jtI1RV7qIOBrXdotIIXuDIq"
                     )
                 }
 

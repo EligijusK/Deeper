@@ -89,7 +89,7 @@ fun BathymetryScreen(
                 }
             }
 
-            DepthLegend(
+            DepthLegendCard(
                 modifier = Modifier
                     .align(Alignment.BottomStart)
                     .padding(16.dp)

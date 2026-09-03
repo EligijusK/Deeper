@@ -79,8 +79,8 @@ class DeeperApi (
             ) {
                 parameter("grid", "FAST")
                 parameter("generator", "BS")
-                parameter("scanIds", scanId)
-                parameter("token", token)
+                parameter("scanIds", scanId) // scanId
+                parameter("token", token) // token
             }
 
             when {
