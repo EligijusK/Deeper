@@ -17,7 +17,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.eligijus.deeper.domain.model.Bathymetry
+import com.eligijus.deeper.domain.model.BathymetryFeature
+import com.eligijus.deeper.domain.model.BathymetryGeometry
+import com.eligijus.deeper.domain.model.BoundingBox
+import com.eligijus.deeper.domain.model.GeoPoint
 import com.eligijus.deeper.domain.model.Scan
+import com.eligijus.deeper.domain.model.ScanGeoData
 import com.eligijus.deeper.presentation.login.LoginScreen
 import com.eligijus.deeper.presentation.login.LoginUiState
 import deeper.shared.generated.resources.Res
@@ -31,6 +37,7 @@ fun BathymetryScreen(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
+
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -74,14 +81,16 @@ fun BathymetryScreen(
                     }
 
                     state.errorMessage != null -> {
+                        println("Error happens ${state.errorMessage}")
                         Text(
                             text = state.errorMessage
                         )
                     }
 
                     state.bathymetry != null -> {
+                        println("Data loaded and BathymetryMap starts")
                         BathymetryMap(
-                            bathymetry = state.bathymetry,
+                            bathymetry = state.bathymetry,  // data, // state.bathymetry,
                             modifier = Modifier
                                 .fillMaxWidth()
                         )
