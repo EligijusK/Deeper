@@ -1,6 +1,7 @@
 package com.eligijus.deeper
 
 import com.eligijus.deeper.domain.model.LoginResult
+import com.eligijus.deeper.domain.model.Scan
 
 sealed interface AppRoute {
     data object Login : AppRoute
@@ -10,7 +11,7 @@ sealed interface AppRoute {
     ) : AppRoute
 
     data class Bathymetry(
-        val scanId: Long,
+        val scan: Scan,
         val token: String
     ) : AppRoute
 }

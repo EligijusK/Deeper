@@ -28,6 +28,7 @@ import com.eligijus.deeper.domain.request.BathymetryRequestOutcome
 import com.eligijus.deeper.domain.request.LoginRequestOutcome
 import com.eligijus.deeper.domain.usecase.LoginUseCase
 import com.eligijus.deeper.presentation.bathymetry.BathymetryScreen
+import com.eligijus.deeper.presentation.bathymetry.BathymetryViewModel
 import com.eligijus.deeper.presentation.login.LoginEvent
 import com.eligijus.deeper.presentation.login.LoginScreen
 import com.eligijus.deeper.presentation.login.LoginViewModel
@@ -50,7 +51,9 @@ fun App() {
     var route by remember {
         mutableStateOf<AppRoute>(AppRoute.Login)
     }
-
+    var loginResult by remember {
+        mutableStateOf<LoginResult?>(null)
+    }
     KoinApplication(configuration = koinConfiguration(declaration = {
         modules(
             networkModule,
@@ -67,6 +70,7 @@ fun App() {
             viewModel.events.collect { event ->
                 when (event) {
                     is LoginEvent.Success -> {
+                        loginResult = event.result
                         route = AppRoute.ScanList(
                             loginResult = event.result
                         )
@@ -91,12 +95,25 @@ fun App() {
                         scans = currentRoute.loginResult.scans,
                         onScanClick = { scan ->
                             route = AppRoute.Bathymetry(
-                                scanId = scan.id,
+                                scan = scan,
                                 token = currentRoute.loginResult.token
                             )
                         }
                     )
                 }
+
+            is AppRoute.Bathymetry -> {
+                BathymetryScreen(
+                    scan = currentRoute.scan,
+                    onBackClick = {
+                        loginResult?.let { result ->
+                            route = AppRoute.ScanList(
+                                loginResult = result
+                            )
+                        }
+                    }
+                )
+            }
 //
 //                is AppRoute.Bathymetry -> {
 //                    BathymetryScreen(
@@ -108,7 +125,7 @@ fun App() {
 //                    )
 //                }
             is AppRoute.Bathymetry -> TODO()
-            
+
         }
 //        MaterialTheme {
 

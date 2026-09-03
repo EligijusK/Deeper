@@ -1,4 +1,4 @@
-package com.eligijus.deeper.presentation.login
+package com.eligijus.deeper.data.mapper
 
 import com.eligijus.deeper.domain.request.RequestError
 

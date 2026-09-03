@@ -15,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.eligijus.deeper.domain.model.Scan
 import com.eligijus.deeper.presentation.login.LoginScreen
 import com.eligijus.deeper.presentation.login.LoginUiState
 import deeper.shared.generated.resources.Res
@@ -23,7 +24,7 @@ import org.jetbrains.compose.resources.painterResource
 
 @Composable
 fun BathymetryScreen(
-    scanName: String,
+    scan: Scan,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -32,7 +33,7 @@ fun BathymetryScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(scanName)
+                    Text(scan.name.toString())
                 },
                 navigationIcon = {
                     IconButton(
@@ -78,6 +79,7 @@ fun BathymetryScreen(
 @Composable
 private fun BathymetryScreenPreview() {
     MaterialTheme {
-        BathymetryScreen("Scan", {}, Modifier)
+        val scan = Scan(1, 55.277287, 21.328197, "", null, 1, 0)
+        BathymetryScreen(scan, {}, Modifier)
     }
 }

@@ -2,6 +2,7 @@ package com.eligijus.deeper.presentation.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.eligijus.deeper.data.mapper.toMessage
 import com.eligijus.deeper.domain.request.LoginRequestOutcome
 import com.eligijus.deeper.domain.usecase.LoginUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -87,7 +88,7 @@ class LoginViewModel (
                     _uiState.update {
                         it.copy(
                             isLoading = false,
-                            errorMessage = result.error.toString()
+                            errorMessage = result.error.toMessage()
                         )
                     }
                 }
