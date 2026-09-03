@@ -6,5 +6,5 @@ data class ScanGeoData(
     val coordinates: List<GeoPoint>,
     val polygons: List<List<GeoPoint>>,
     val startLocation: GeoPoint?,
-    val size: Long?
+    val size: Double?
 )

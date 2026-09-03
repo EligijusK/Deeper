@@ -9,5 +9,5 @@ data class ScanGeoDataDto(
     val coordinates: List<List<Double>>? = null,
     val polygons: List<List<List<Double>>>? = null,
     val startLocation: List<Double>? = null,
-    val size: Long? = null
+    val size: Double? = null
 )
