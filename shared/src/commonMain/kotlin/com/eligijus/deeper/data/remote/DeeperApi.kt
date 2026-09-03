@@ -13,6 +13,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
+import kotlinx.io.IOException
 import kotlin.coroutines.cancellation.CancellationException
 
 class DeeperApi (
@@ -109,8 +110,13 @@ class DeeperApi (
 
         } catch (e: CancellationException) {
             throw e
-        } catch (e: Exception) {
+        }
+        catch (e: IOException) {
             ApiResult.NetworkError
+        }
+        catch (e: Exception) {
+            println("Unexpected API error: ${e::class.simpleName}: ${e.message}")
+            ApiResult.UnknownError
         }
     }
 
