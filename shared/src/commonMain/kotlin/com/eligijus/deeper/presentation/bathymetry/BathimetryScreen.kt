@@ -3,6 +3,7 @@ package com.eligijus.deeper.presentation.bathymetry
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -56,32 +57,6 @@ fun BathymetryScreen(
                 .padding(paddingValues)
         ) {
 
-            when {
-                state.isLoading -> {
-                    CircularProgressIndicator()
-                    println("Is Loading")
-                }
-
-                state.errorMessage != null -> {
-                    Text(
-                        text = state.errorMessage
-                    )
-                }
-
-                state.bathymetry != null -> {
-                    Text("Bathymetry loaded")
-                    println("data: ${state.bathymetry?.features?.size}")
-                    Text(
-                        text = "Features: ${state.bathymetry.features.size}"
-                    )
-
-                    Text(
-                        text = "Geo data: ${state.bathymetry.scansGeoData.size}"
-                    )
-                }
-            }
-
-
             // Temporary map placeholder
             Box(
                 modifier = Modifier
@@ -91,7 +66,27 @@ fun BathymetryScreen(
                     ),
                 contentAlignment = Alignment.Center
             ) {
-                Text("Bathymetry map")
+
+                when {
+                    state.isLoading -> {
+                        CircularProgressIndicator()
+                        println("Is Loading")
+                    }
+
+                    state.errorMessage != null -> {
+                        Text(
+                            text = state.errorMessage
+                        )
+                    }
+
+                    state.bathymetry != null -> {
+                        BathymetryMap(
+                            bathymetry = state.bathymetry,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        )
+                    }
+                }
             }
 
             DepthLegend(

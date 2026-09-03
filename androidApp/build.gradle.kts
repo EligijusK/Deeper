@@ -1,4 +1,5 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.androidApplication)
@@ -16,7 +17,19 @@ dependencies {
     implementation(libs.androidx.activity.compose)
 
     implementation(libs.compose.uiToolingPreview)
+    implementation(libs.play.services.maps)
     debugImplementation(libs.compose.uiTooling)
+}
+
+
+val localProperties = Properties().apply {
+    val file = rootProject.file("local.properties")
+
+    if (file.exists()) {
+        file.inputStream().use {
+            load(it)
+        }
+    }
 }
 
 android {
@@ -24,6 +37,7 @@ android {
     compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
+        manifestPlaceholders["MAPS_API_KEY"] = localProperties.getProperty("MAPS_API_KEY", "")
         applicationId = "com.eligijus.deeper"
         minSdk = libs.versions.android.minSdk.get().toInt()
         targetSdk = libs.versions.android.targetSdk.get().toInt()
