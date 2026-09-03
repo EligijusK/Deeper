@@ -1,6 +1,7 @@
 package com.eligijus.deeper.di
 
 import com.eligijus.deeper.domain.usecase.BathymetryUseCase
+import com.eligijus.deeper.domain.usecase.GetBathymetryAvailabilityUseCase
 import com.eligijus.deeper.domain.usecase.LoginUseCase
 import org.koin.dsl.module
 
@@ -14,6 +15,12 @@ val useCaseModule = module {
 
     factory {
         BathymetryUseCase(
+            scanRepository = get()
+        )
+    }
+
+    factory {
+        GetBathymetryAvailabilityUseCase(
             scanRepository = get()
         )
     }

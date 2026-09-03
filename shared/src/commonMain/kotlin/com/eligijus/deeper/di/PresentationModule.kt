@@ -2,6 +2,7 @@ package com.eligijus.deeper.di
 
 import com.eligijus.deeper.presentation.bathymetry.BathymetryViewModel
 import com.eligijus.deeper.presentation.login.LoginViewModel
+import com.eligijus.deeper.presentation.scans.ScanListViewModel
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
 
@@ -16,6 +17,12 @@ val presentationModule = module {
     viewModel {
         BathymetryViewModel(
             bathymetryUseCase = get()
+        )
+    }
+
+    viewModel {
+        ScanListViewModel(
+            getBathymetryAvailabilityUseCase = get()
         )
     }
 }
