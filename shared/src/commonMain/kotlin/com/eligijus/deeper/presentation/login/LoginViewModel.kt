@@ -3,6 +3,8 @@ package com.eligijus.deeper.presentation.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eligijus.deeper.data.mapper.toMessage
+import com.eligijus.deeper.domain.model.LoginResult
+import com.eligijus.deeper.domain.model.hasValidLocation
 import com.eligijus.deeper.domain.request.LoginRequestOutcome
 import com.eligijus.deeper.domain.usecase.LoginUseCase
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -75,12 +77,22 @@ class LoginViewModel (
                             isLoading = false
                         )
                     }
+                    // here
+
+                    val validScans = result.result.scans
+                        .filter { scan ->
+                            scan.hasValidLocation()
+                        }
+                    val filteredResult = result.result.copy(
+                        scans = validScans
+                    )
 
                     _events.emit(
                         LoginEvent.Success(
-                            result.result
+                            filteredResult
                         )
                     )
+
                 }
 
                 is LoginRequestOutcome.Failure -> {

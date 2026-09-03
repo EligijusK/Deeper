@@ -7,6 +7,10 @@ import com.eligijus.deeper.data.remote.dto.login.LoginResponseDto
 
 class FakeDeeperApi : DeeperApiInterface {
 
+    var bathymetryCallCount = 0
+
+    var bathymetryResult: ApiResult<BathymetryResponseDto> =
+        ApiResult.NetworkError
     var loginResult: ApiResult<LoginResponseDto> =
         ApiResult.UnknownError
 
@@ -21,6 +25,7 @@ class FakeDeeperApi : DeeperApiInterface {
         scanId: Long,
         token: String
     ): ApiResult<BathymetryResponseDto> {
-        return ApiResult.UnknownError
+        bathymetryCallCount++
+        return bathymetryResult
     }
 }

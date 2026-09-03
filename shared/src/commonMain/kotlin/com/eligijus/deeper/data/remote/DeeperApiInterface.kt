@@ -13,4 +13,5 @@ interface DeeperApiInterface {
         scanId: Long,
         token: String
     ): ApiResult<BathymetryResponseDto>
+
 }

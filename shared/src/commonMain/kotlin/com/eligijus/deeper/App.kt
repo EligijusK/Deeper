@@ -24,7 +24,6 @@ import com.eligijus.deeper.di.useCaseModule
 import com.eligijus.deeper.domain.model.LoginResult
 import com.eligijus.deeper.domain.model.Scan
 import com.eligijus.deeper.domain.repository.AuthRepository
-import com.eligijus.deeper.domain.repository.BathymetryRepository
 import com.eligijus.deeper.domain.request.BathymetryRequestOutcome
 import com.eligijus.deeper.domain.request.LoginRequestOutcome
 import com.eligijus.deeper.domain.usecase.LoginUseCase

@@ -1,5 +1,6 @@
 package com.eligijus.deeper.domain.repository.`interface`
 
+import com.eligijus.deeper.domain.model.BathymetryAvailability
 import com.eligijus.deeper.domain.request.BathymetryRequestOutcome
 
 interface ScanRepositoryInterface {
@@ -7,4 +8,8 @@ interface ScanRepositoryInterface {
         scanId: Long,
         token: String
     ): BathymetryRequestOutcome
+
+    fun getBathymetryAvailability(
+        scanId: Long
+    ): BathymetryAvailability
 }

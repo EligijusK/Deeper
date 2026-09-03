@@ -167,7 +167,7 @@ class BathymetryMapperTest {
                         25.511019,
                         55.06153
                     ),
-                    size = 3443
+                    size = 3443.0
                 )
             )
         )
@@ -192,7 +192,7 @@ class BathymetryMapperTest {
         )
 
         assertEquals(
-            expected = 3443L,
+            expected = 3443.0,
             actual = scanGeoData.size
         )
 
