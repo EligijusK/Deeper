@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -44,15 +45,15 @@ fun LoginScreen(
         mutableStateOf(false)
     }
 
+
+
     Box(
         modifier = modifier
             .fillMaxSize()
             .padding(24.dp)
     ) {
         Column(
-            modifier = modifier
-                .fillMaxSize()
-                .padding(horizontal = 24.dp)
+
         ){
             Text(
                 text = "Welcome",
@@ -160,7 +161,7 @@ fun LoginScreen(
             ) {
                 if (state.isLoading) {
                     CircularProgressIndicator(
-                        modifier = Modifier.height(24.dp),
+                        modifier = Modifier.size(24.dp),
                         strokeWidth = 2.dp
                     )
                 } else {
@@ -174,7 +175,7 @@ fun LoginScreen(
 
 @Preview
 @Composable
-private fun ForecastScreenPreview() {
+private fun LoginScreenPreview() {
     MaterialTheme {
         val loginState: LoginUiState = LoginUiState("e.kiudys@gmail.com", "password", false)
         LoginScreen(loginState, {}, {}, {}, Modifier)

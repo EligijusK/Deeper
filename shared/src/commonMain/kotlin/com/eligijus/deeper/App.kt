@@ -32,6 +32,7 @@ import com.eligijus.deeper.presentation.bathymetry.BathymetryViewModel
 import com.eligijus.deeper.presentation.login.LoginEvent
 import com.eligijus.deeper.presentation.login.LoginScreen
 import com.eligijus.deeper.presentation.login.LoginViewModel
+import com.eligijus.deeper.presentation.scans.ScanListRoute
 import com.eligijus.deeper.presentation.scans.ScanListScreen
 import org.jetbrains.compose.resources.painterResource
 import deeper.shared.generated.resources.Res
@@ -91,7 +92,7 @@ fun App() {
             }
 
                 is AppRoute.ScanList -> {
-                    ScanListScreen(
+                    ScanListRoute(
                         scans = currentRoute.loginResult.scans,
                         onScanClick = { scan ->
                             route = AppRoute.Bathymetry(

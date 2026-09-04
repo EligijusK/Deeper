@@ -1,5 +1,6 @@
 package com.eligijus.deeper.presentation.scans
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,10 +28,11 @@ fun ScanCard(
         modifier = modifier.fillMaxWidth()
     ) {
         Column(
-            modifier = Modifier.padding(16.dp)
+            modifier = Modifier.padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             Text(
-                text = scan.name.toString(),
+                text = scan.name.toString() ?: "Unnamed scan",
                 style = MaterialTheme.typography.titleMedium
             )
 
@@ -38,11 +40,13 @@ fun ScanCard(
                 modifier = Modifier.height(8.dp)
             )
 
-            Text(
-                text = "${scan.date}",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            formatScanDate(scan.date)?.let { formattedDate ->
+                Text(
+                    text = formattedDate,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
 
             Spacer(
                 modifier = Modifier.height(4.dp)
@@ -50,8 +54,6 @@ fun ScanCard(
 
             Text(
                 text = "${scan.scanPoints} scan points",
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
 
             Spacer(
@@ -60,19 +62,35 @@ fun ScanCard(
 
             when (availability) {
                 BathymetryAvailability.AVAILABLE -> {
-                    Text("Bathymetry available")
+                    Text(
+                        text = "Bathymetry available",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+
                 }
 
                 BathymetryAvailability.NOT_AVAILABLE -> {
-                    Text("No bathymetry data")
+                    Text(
+                        text = "Location data only",
+                        style = MaterialTheme.typography.labelMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
                 }
 
-                BathymetryAvailability.UNKNOWN -> {
-                    // I would display nothing here
-                }
+                BathymetryAvailability.UNKNOWN -> Unit
             }
         }
     }
+}
+
+fun formatScanDate(date: String?): String? {
+    if (date.isNullOrBlank()) {
+        return null
+    }
+
+    return date
+        .substringBefore("T")
 }
 
 @Preview

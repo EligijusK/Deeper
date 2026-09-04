@@ -20,15 +20,10 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun ScanListScreen(
     scans: List<Scan>,
+    state: ScanListUiState,
     onScanClick: (Scan) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val viewModel = koinViewModel<ScanListViewModel>()
-    val uiState by viewModel.uiState.collectAsState()
-
-    LaunchedEffect(scans) {
-        viewModel.refreshAvailability(scans)
-    }
 
     LazyColumn(
         modifier = modifier.fillMaxSize(),
@@ -36,14 +31,17 @@ fun ScanListScreen(
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         items(
-            items = scans
+            items = scans,
+            key = { scan -> scan.id }
         ) { scan ->
+
             val availability =
-                uiState.availability[scan.id]
+                state.availability[scan.id]
                     ?: BathymetryAvailability.UNKNOWN
+
             ScanCard(
                 scan = scan,
-                availability,
+                availability = availability,
                 onClick = {
                     onScanClick(scan)
                 }
@@ -58,12 +56,12 @@ private fun ScanListScreenPreview() {
     MaterialTheme {
         val scanList: List<Scan> = listOf<Scan> (
             Scan(1, 55.277287, 21.328197, "", null, 1, 0),
-            Scan(1, 55.277287, 21.328197, "", null, 1, 0),
-            Scan(1, 55.277287, 21.328197, "", null, 1, 0),
-            Scan(1, 55.277287, 21.328197, "", null, 1, 0),
-            Scan(1, 55.277287, 21.328197, "", null, 1, 0)
+            Scan(2, 55.277287, 21.328197, "", null, 1, 0),
+            Scan(3, 55.277287, 21.328197, "", null, 1, 0),
+            Scan(4, 55.277287, 21.328197, "", null, 1, 0),
+            Scan(5, 55.277287, 21.328197, "", null, 1, 0)
         )
 
-        ScanListScreen(scanList, {}, Modifier)
+        ScanListScreen(scanList, ScanListUiState(), {}, Modifier)
     }
 }

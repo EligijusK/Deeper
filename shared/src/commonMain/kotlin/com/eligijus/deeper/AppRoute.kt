@@ -14,4 +14,6 @@ sealed interface AppRoute {
         val scan: Scan,
         val token: String
     ) : AppRoute
+
+
 }
