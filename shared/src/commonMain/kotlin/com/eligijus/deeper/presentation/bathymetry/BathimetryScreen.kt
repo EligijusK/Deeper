@@ -38,19 +38,12 @@ import org.koin.compose.viewmodel.koinViewModel
 @Composable
 fun BathymetryScreen(
     scan: Scan,
-    token: String,
+    state: BathymetryUiState,
+    onRetry: () -> Unit,
     onBackClick: () -> Unit,
-    viewModel: BathymetryViewModel = koinViewModel(),
     modifier: Modifier = Modifier
 ) {
-    val uiState by viewModel.uiState.collectAsState()
 
-    LaunchedEffect(scan.id) {
-        viewModel.loadBathymetry(
-            scanId = scan.id,
-            token = token
-        )
-    }
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -76,48 +69,36 @@ fun BathymetryScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-
-            // Temporary map placeholder
+            
             Box(
                 modifier = Modifier
                     .fillMaxSize(),
-                contentAlignment = Alignment.Center
+
             ) {
 
-                when {
-                    uiState.isLoading -> {
-                        CircularProgressIndicator(
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    }
 
-                    uiState.errorMessage != null -> {
-                        BathymetryError(
-                            message = uiState.errorMessage!!,
-                            onRetry = {
-                                viewModel.loadBathymetry(
-                                    scanId = scan.id,
-                                    token = token
-                                )
-                            },
-                            modifier = Modifier.align(Alignment.Center)
-                        )
-                    }
+            }
+            when {
+                state.isLoading -> {
+                    CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
 
-                    uiState.bathymetry != null -> {
-                        BathymetryMap(
-                            bathymetry = uiState.bathymetry!!,
-                            modifier = Modifier.fillMaxSize()
+                state.bathymetry != null -> {
+                    BathymetryMap(
+                        bathymetry = state.bathymetry,
+                        modifier = Modifier.fillMaxSize()
+                    )
+                    if(state.bathymetry.features.isNotEmpty()) {
+                        DepthLegendCard(
+                            modifier = Modifier
+                                .align(Alignment.BottomStart)
+                                .padding(16.dp)
                         )
                     }
                 }
             }
-
-            DepthLegendCard(
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .padding(16.dp)
-            )
         }
     }
 }
@@ -127,6 +108,15 @@ fun BathymetryScreen(
 private fun BathymetryScreenPreview() {
     MaterialTheme {
         val scan = Scan(1, 55.277287, 21.328197, "", null, 1, 0)
-        BathymetryScreen(scan, "", {})
+        BathymetryScreen(
+            scan = scan,
+            state = BathymetryUiState(
+                isLoading = false,
+                bathymetry = null,
+                errorMessage = "Unable to load bathymetry."
+            ),
+            onRetry = {},
+            onBackClick = {}
+        )
     }
 }

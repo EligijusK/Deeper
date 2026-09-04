@@ -27,6 +27,7 @@ import com.eligijus.deeper.domain.repository.AuthRepository
 import com.eligijus.deeper.domain.request.BathymetryRequestOutcome
 import com.eligijus.deeper.domain.request.LoginRequestOutcome
 import com.eligijus.deeper.domain.usecase.LoginUseCase
+import com.eligijus.deeper.presentation.bathymetry.BathymetryRoute
 import com.eligijus.deeper.presentation.bathymetry.BathymetryScreen
 import com.eligijus.deeper.presentation.bathymetry.BathymetryViewModel
 import com.eligijus.deeper.presentation.login.LoginEvent
@@ -117,7 +118,7 @@ fun App() {
                     )
                 }
 
-                BathymetryScreen(
+                BathymetryRoute(
                     scan = currentRoute.scan,
                     token = currentRoute.token,
                     onBackClick = {

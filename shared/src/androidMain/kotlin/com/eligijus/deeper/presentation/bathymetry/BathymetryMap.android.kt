@@ -31,10 +31,15 @@ actual fun BathymetryMap(
             scan.startLocation
                 ?: scan.coordinates.firstOrNull()
         }
+    val hasBathymetry = bathymetry.features.isNotEmpty()
 
-    LaunchedEffect(mapLoaded, bounds) {
-        if (bathymetry.features.isNotEmpty()) {
-            if (mapLoaded && bounds != null) {
+    LaunchedEffect(mapLoaded, bounds, startLocation, hasBathymetry) {
+        if (!mapLoaded) {
+            return@LaunchedEffect
+        }
+
+
+            if (hasBathymetry && bounds != null) {
                 val latLngBounds = LatLngBounds(
                     LatLng(
                         bounds.minLatitude,
@@ -53,8 +58,7 @@ actual fun BathymetryMap(
                     )
                 )
             }
-        }
-        else if (startLocation != null) {
+            else if (startLocation != null) {
             cameraPositionState.animate(
                 CameraUpdateFactory.newLatLngZoom(
                     LatLng(
