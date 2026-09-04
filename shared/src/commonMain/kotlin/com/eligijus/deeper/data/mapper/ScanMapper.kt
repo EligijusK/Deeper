@@ -8,8 +8,13 @@ fun ScanDto.toDomain(): Scan {
         id = id,
         latitude = lat,
         longitude = lon,
-        name = name,
-        date = date,
+        name = name
+            ?.trim()
+            ?.takeIf { it.isNotEmpty() },
+
+        date = date
+            ?.trim()
+            ?.takeIf { it.isNotEmpty() },
         scanPoints = scanPoints,
         mode = mode
     )

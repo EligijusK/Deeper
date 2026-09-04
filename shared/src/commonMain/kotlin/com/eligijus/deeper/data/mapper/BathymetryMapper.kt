@@ -13,7 +13,7 @@ import com.eligijus.deeper.domain.model.ScanGeoData
 
 fun BathymetryResponseDto.toDomain(): Bathymetry {
     return Bathymetry(
-        boundingBox = bathymetry.bbox?.toBoundingBox(),
+        boundingBox = bathymetry.bbox.toBoundingBox(),
         features = bathymetry.features.mapNotNull { feature ->
             feature.toDomain()
         },
@@ -50,7 +50,7 @@ fun FeatureDto.toDomain(): BathymetryFeature? {
         id = properties.id,
         depth = properties.depth,
         geometry = BathymetryGeometry(
-            boundingBox = geometry.bbox?.toBoundingBox(),
+            boundingBox = geometry.bbox.toBoundingBox(),
             coordinates = points
         )
     )
