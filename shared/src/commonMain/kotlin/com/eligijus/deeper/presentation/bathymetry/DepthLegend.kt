@@ -37,7 +37,7 @@ val depthColorRanges = listOf(
 
 
 fun depthColor(depth: Double): Color {
-    return depthColorRanges.first() { range -> // this also
+    return depthColorRanges.first { range -> // this also
         depth >= range.minDepth &&
                 (range.maxDepth == null || depth < range.maxDepth)
     }.color.copy(alpha = 0.7f)

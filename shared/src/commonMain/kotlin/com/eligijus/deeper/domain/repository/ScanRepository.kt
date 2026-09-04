@@ -3,7 +3,6 @@ package com.eligijus.deeper.domain.repository
 import com.eligijus.deeper.data.mapper.toDomain
 import com.eligijus.deeper.data.remote.ApiResult
 import com.eligijus.deeper.data.remote.DeeperApiInterface
-import com.eligijus.deeper.data.remote.dto.Bathymetry.BathymetryResponseDto
 import com.eligijus.deeper.domain.model.BathymetryAvailability
 import com.eligijus.deeper.domain.repository.`interface`.ScanRepositoryInterface
 import com.eligijus.deeper.domain.request.BathymetryRequestOutcome

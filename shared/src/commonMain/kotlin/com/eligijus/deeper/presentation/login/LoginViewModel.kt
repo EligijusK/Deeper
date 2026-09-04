@@ -3,7 +3,6 @@ package com.eligijus.deeper.presentation.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eligijus.deeper.data.mapper.toMessage
-import com.eligijus.deeper.domain.model.LoginResult
 import com.eligijus.deeper.domain.model.hasValidLocation
 import com.eligijus.deeper.domain.request.LoginRequestOutcome
 import com.eligijus.deeper.domain.usecase.LoginUseCase

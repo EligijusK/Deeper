@@ -37,7 +37,7 @@ fun ScanCard(
             )
 
             Spacer(
-                modifier = Modifier.height(8.dp)
+                modifier = Modifier.height(6.dp)
             )
 
             formatScanDate(scan.date)?.let { formattedDate ->
@@ -49,15 +49,22 @@ fun ScanCard(
             }
 
             Spacer(
-                modifier = Modifier.height(4.dp)
+                modifier = Modifier.height(2.dp)
             )
 
-            Text(
-                text = "${scan.scanPoints} scan points",
-            )
+            if (scan.scanPoints == 1) {
+                Text(
+                    text = "1 scan point",
+                )
+            } else {
+                Text(
+                    text = "${scan.scanPoints} scan points",
+                )
+            }
+
 
             Spacer(
-                modifier = Modifier.height(4.dp)
+                modifier = Modifier.height(2.dp)
             )
 
             when (availability) {
@@ -97,7 +104,7 @@ fun formatScanDate(date: String?): String? {
 @Composable
 private fun ScanCardPreview() {
     MaterialTheme {
-        val scanUiModel: Scan = Scan(1, 55.277287, 21.328197, "", null, 1, 0)
+        val scanUiModel = Scan(1, 55.277287, 21.328197, "", null, 1, 0)
         ScanCard(scanUiModel, BathymetryAvailability.UNKNOWN, {}, Modifier)
         ScanCard(scanUiModel, BathymetryAvailability.AVAILABLE, {}, Modifier)
         ScanCard(scanUiModel, BathymetryAvailability.NOT_AVAILABLE, {}, Modifier)

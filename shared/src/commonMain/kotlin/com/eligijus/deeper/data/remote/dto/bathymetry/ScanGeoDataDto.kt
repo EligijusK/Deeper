@@ -1,4 +1,4 @@
-package com.eligijus.deeper.data.remote.dto.Bathymetry
+package com.eligijus.deeper.data.remote.dto.bathymetry
 
 import kotlinx.serialization.Serializable
 

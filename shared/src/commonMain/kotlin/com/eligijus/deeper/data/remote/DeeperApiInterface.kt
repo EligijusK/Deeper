@@ -1,6 +1,6 @@
 package com.eligijus.deeper.data.remote
 
-import com.eligijus.deeper.data.remote.dto.Bathymetry.BathymetryResponseDto
+import com.eligijus.deeper.data.remote.dto.bathymetry.BathymetryResponseDto
 import com.eligijus.deeper.data.remote.dto.login.LoginResponseDto
 
 interface DeeperApiInterface {

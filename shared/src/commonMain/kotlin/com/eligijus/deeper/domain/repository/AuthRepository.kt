@@ -2,7 +2,6 @@ package com.eligijus.deeper.domain.repository
 
 import com.eligijus.deeper.data.mapper.toDomain
 import com.eligijus.deeper.data.remote.ApiResult
-import com.eligijus.deeper.data.remote.DeeperApi
 import com.eligijus.deeper.data.remote.DeeperApiInterface
 import com.eligijus.deeper.domain.request.RequestError
 import com.eligijus.deeper.domain.request.LoginRequestOutcome
@@ -28,7 +27,7 @@ class AuthRepository(
             is ApiResult.Success -> {
                 val response = result.data
 
-                LoginRequestOutcome.Success(
+                Success(
                     LoginResult(
                         token = response.login.token,
                         userId = response.login.userId,

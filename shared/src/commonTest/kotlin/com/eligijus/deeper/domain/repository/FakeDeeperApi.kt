@@ -2,7 +2,7 @@ package com.eligijus.deeper.domain.repository
 
 import com.eligijus.deeper.data.remote.ApiResult
 import com.eligijus.deeper.data.remote.DeeperApiInterface
-import com.eligijus.deeper.data.remote.dto.Bathymetry.BathymetryResponseDto
+import com.eligijus.deeper.data.remote.dto.bathymetry.BathymetryResponseDto
 import com.eligijus.deeper.data.remote.dto.login.LoginResponseDto
 
 class FakeDeeperApi : DeeperApiInterface {

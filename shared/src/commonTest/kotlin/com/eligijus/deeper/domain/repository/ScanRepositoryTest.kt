@@ -1,11 +1,11 @@
 package com.eligijus.deeper.domain.repository
 
 import com.eligijus.deeper.data.remote.ApiResult
-import com.eligijus.deeper.data.remote.dto.Bathymetry.BathymetryResponseDto
-import com.eligijus.deeper.data.remote.dto.Bathymetry.FeatureCollectionDto
-import com.eligijus.deeper.data.remote.dto.Bathymetry.FeatureDto
-import com.eligijus.deeper.data.remote.dto.Bathymetry.GeometryDto
-import com.eligijus.deeper.data.remote.dto.Bathymetry.PropertiesDto
+import com.eligijus.deeper.data.remote.dto.bathymetry.BathymetryResponseDto
+import com.eligijus.deeper.data.remote.dto.bathymetry.FeatureCollectionDto
+import com.eligijus.deeper.data.remote.dto.bathymetry.FeatureDto
+import com.eligijus.deeper.data.remote.dto.bathymetry.GeometryDto
+import com.eligijus.deeper.data.remote.dto.bathymetry.PropertiesDto
 import com.eligijus.deeper.domain.model.BathymetryAvailability
 import kotlinx.coroutines.test.runTest
 import kotlin.test.Test

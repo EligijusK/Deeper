@@ -13,8 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.eligijus.deeper.domain.model.Scan
-import com.eligijus.deeper.presentation.bathymetry.BathymetryScreen
-import com.eligijus.deeper.presentation.bathymetry.BathymetryUiState
+
 
 @Composable
 fun BathymetryError(

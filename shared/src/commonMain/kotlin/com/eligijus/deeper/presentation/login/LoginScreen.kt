@@ -7,15 +7,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,8 +31,10 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import org.koin.compose.viewmodel.koinViewModel
-import androidx.compose.foundation.text.BasicTextField
+import deeper.shared.generated.resources.Res
+import deeper.shared.generated.resources.visibility
+import deeper.shared.generated.resources.visibility_off
+import org.jetbrains.compose.resources.painterResource
 
 
 @Composable
@@ -50,11 +54,10 @@ fun LoginScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
+            .safeDrawingPadding()
             .padding(24.dp)
     ) {
-        Column(
-
-        ){
+        Column {
             Text(
                 text = "Welcome",
                 style = MaterialTheme.typography.headlineLarge,
@@ -120,16 +123,23 @@ fun LoginScreen(
                     }
                 ),
                 trailingIcon = {
-                    TextButton(
+                    IconButton(
                         onClick = {
                             passwordVisible = !passwordVisible
                         }
-                    ) {
-                        Text(
-                            text = if (passwordVisible) {
-                                "Hide"
+                    )  {
+                        Icon(
+                            painter = painterResource(
+                                if (passwordVisible) {
+                                    Res.drawable.visibility_off
+                                } else {
+                                    Res.drawable.visibility
+                                }
+                            ),
+                            contentDescription = if (passwordVisible) {
+                                "Hide password"
                             } else {
-                                "Show"
+                                "Show password"
                             }
                         )
                     }
@@ -177,7 +187,7 @@ fun LoginScreen(
 @Composable
 private fun LoginScreenPreview() {
     MaterialTheme {
-        val loginState: LoginUiState = LoginUiState("e.kiudys@gmail.com", "password", false)
+        val loginState = LoginUiState("e.kiudys@gmail.com", "password", false)
         LoginScreen(loginState, {}, {}, {}, Modifier)
     }
 }

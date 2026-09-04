@@ -1,12 +1,11 @@
 package com.eligijus.deeper.data.mapper
 
-import com.eligijus.deeper.data.remote.dto.Bathymetry.BathymetryResponseDto
-import com.eligijus.deeper.data.remote.dto.Bathymetry.FeatureDto
-import com.eligijus.deeper.data.remote.dto.Bathymetry.ScanGeoDataDto
+import com.eligijus.deeper.data.remote.dto.bathymetry.BathymetryResponseDto
+import com.eligijus.deeper.data.remote.dto.bathymetry.FeatureDto
+import com.eligijus.deeper.data.remote.dto.bathymetry.ScanGeoDataDto
 import com.eligijus.deeper.domain.model.Bathymetry
 import com.eligijus.deeper.domain.model.BathymetryFeature
 import com.eligijus.deeper.domain.model.BathymetryGeometry
-import com.eligijus.deeper.domain.model.BathymetryPolygon
 import com.eligijus.deeper.domain.model.BoundingBox
 import com.eligijus.deeper.domain.model.GeoPoint
 import com.eligijus.deeper.domain.model.ScanGeoData

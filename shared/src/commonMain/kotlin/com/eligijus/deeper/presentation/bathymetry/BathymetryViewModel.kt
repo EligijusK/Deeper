@@ -4,9 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.eligijus.deeper.data.mapper.toMessage
 import com.eligijus.deeper.domain.request.BathymetryRequestOutcome
-import com.eligijus.deeper.domain.request.LoginRequestOutcome
 import com.eligijus.deeper.domain.usecase.BathymetryUseCase
-import com.eligijus.deeper.presentation.login.LoginEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

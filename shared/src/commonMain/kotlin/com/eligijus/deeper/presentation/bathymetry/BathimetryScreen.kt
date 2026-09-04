@@ -1,9 +1,7 @@
 package com.eligijus.deeper.presentation.bathymetry
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -13,27 +11,16 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.eligijus.deeper.domain.model.Bathymetry
-import com.eligijus.deeper.domain.model.BathymetryFeature
-import com.eligijus.deeper.domain.model.BathymetryGeometry
-import com.eligijus.deeper.domain.model.BoundingBox
-import com.eligijus.deeper.domain.model.GeoPoint
 import com.eligijus.deeper.domain.model.Scan
-import com.eligijus.deeper.domain.model.ScanGeoData
 import com.eligijus.deeper.presentation.bathymetry.components.BathymetryError
-import com.eligijus.deeper.presentation.login.LoginScreen
-import com.eligijus.deeper.presentation.login.LoginUiState
 import deeper.shared.generated.resources.Res
-import deeper.shared.generated.resources.compose_multiplatform
+import deeper.shared.generated.resources.arrow_black_ios
 import org.jetbrains.compose.resources.painterResource
-import org.koin.compose.viewmodel.koinViewModel
+
 
 @Composable
 fun BathymetryScreen(
@@ -49,16 +36,22 @@ fun BathymetryScreen(
         topBar = {
             TopAppBar(
                 title = {
-                    Text(scan.name.toString())
+                    Text(
+                        scan.name?.trim()
+                        ?.takeIf { it.isNotEmpty() }
+                        ?: "Unnamed scan"
+                    )
                 },
                 navigationIcon = {
                     IconButton(
                         onClick = onBackClick
                     ) {
-//                        Icon(
-//                            imageVector = painterResource(Res.drawable.compose_multiplatform.),
-//                            contentDescription = "Back"
-//                        )
+                        Icon(
+                            painter = painterResource(
+                                Res.drawable.arrow_black_ios
+                            ),
+                            contentDescription = "Back"
+                        )
                     }
                 }
             )
@@ -81,6 +74,14 @@ fun BathymetryScreen(
             when {
                 state.isLoading -> {
                     CircularProgressIndicator(
+                        modifier = Modifier.align(Alignment.Center)
+                    )
+                }
+
+                state.errorMessage != null -> {
+                    BathymetryError(
+                        message = state.errorMessage,
+                        onRetry = onRetry,
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
