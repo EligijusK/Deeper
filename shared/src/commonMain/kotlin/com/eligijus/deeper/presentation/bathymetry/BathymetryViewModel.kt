@@ -23,11 +23,16 @@ class BathymetryViewModel(
         scanId: Long,
         token: String
     ) {
+        if (_uiState.value.isLoading) {
+            return
+        }
+
         viewModelScope.launch {
 
             _uiState.update {
                 it.copy(
                     isLoading = true,
+                    bathymetry = null,
                     errorMessage = null
                 )
             }
@@ -42,7 +47,8 @@ class BathymetryViewModel(
                     _uiState.update {
                         it.copy(
                             isLoading = false,
-                            bathymetry = result.result
+                            bathymetry = result.result,
+                            errorMessage = null
                         )
                     }
                 }
@@ -51,6 +57,7 @@ class BathymetryViewModel(
                     _uiState.update {
                         it.copy(
                             isLoading = false,
+                            bathymetry = null,
                             errorMessage = result.error.toMessage()
                         )
                     }

@@ -106,8 +106,6 @@ fun App() {
 
                 val bathymetryViewModel = koinViewModel<BathymetryViewModel>()
 
-                val bathymetryState by bathymetryViewModel.uiState.collectAsState()
-
                 LaunchedEffect(
                     currentRoute.scan.id,
                     currentRoute.token
@@ -120,7 +118,7 @@ fun App() {
 
                 BathymetryScreen(
                     scan = currentRoute.scan,
-                    state = bathymetryState,
+                    token = currentRoute.token,
                     onBackClick = {
                         loginResult?.let { result ->
                             route = AppRoute.ScanList(

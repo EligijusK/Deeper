@@ -13,6 +13,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -24,20 +27,30 @@ import com.eligijus.deeper.domain.model.BoundingBox
 import com.eligijus.deeper.domain.model.GeoPoint
 import com.eligijus.deeper.domain.model.Scan
 import com.eligijus.deeper.domain.model.ScanGeoData
+import com.eligijus.deeper.presentation.bathymetry.components.BathymetryError
 import com.eligijus.deeper.presentation.login.LoginScreen
 import com.eligijus.deeper.presentation.login.LoginUiState
 import deeper.shared.generated.resources.Res
 import deeper.shared.generated.resources.compose_multiplatform
 import org.jetbrains.compose.resources.painterResource
+import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun BathymetryScreen(
     scan: Scan,
-    state: BathymetryUiState,
+    token: String,
     onBackClick: () -> Unit,
+    viewModel: BathymetryViewModel = koinViewModel(),
     modifier: Modifier = Modifier
 ) {
+    val uiState by viewModel.uiState.collectAsState()
 
+    LaunchedEffect(scan.id) {
+        viewModel.loadBathymetry(
+            scanId = scan.id,
+            token = token
+        )
+    }
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -67,32 +80,34 @@ fun BathymetryScreen(
             // Temporary map placeholder
             Box(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .background(
-                        MaterialTheme.colorScheme.surfaceVariant
-                    ),
+                    .fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
 
                 when {
-                    state.isLoading -> {
-                        CircularProgressIndicator()
-                        println("Is Loading")
-                    }
-
-                    state.errorMessage != null -> {
-                        println("Error happens ${state.errorMessage}")
-                        Text(
-                            text = state.errorMessage
+                    uiState.isLoading -> {
+                        CircularProgressIndicator(
+                            modifier = Modifier.align(Alignment.Center)
                         )
                     }
 
-                    state.bathymetry != null -> {
-                        println("Data loaded and BathymetryMap starts")
+                    uiState.errorMessage != null -> {
+                        BathymetryError(
+                            message = uiState.errorMessage!!,
+                            onRetry = {
+                                viewModel.loadBathymetry(
+                                    scanId = scan.id,
+                                    token = token
+                                )
+                            },
+                            modifier = Modifier.align(Alignment.Center)
+                        )
+                    }
+
+                    uiState.bathymetry != null -> {
                         BathymetryMap(
-                            bathymetry = state.bathymetry,  // data, // state.bathymetry,
-                            modifier = Modifier
-                                .fillMaxWidth()
+                            bathymetry = uiState.bathymetry!!,
+                            modifier = Modifier.fillMaxSize()
                         )
                     }
                 }
@@ -112,6 +127,6 @@ fun BathymetryScreen(
 private fun BathymetryScreenPreview() {
     MaterialTheme {
         val scan = Scan(1, 55.277287, 21.328197, "", null, 1, 0)
-        BathymetryScreen(scan, BathymetryUiState(), {}, Modifier)
+        BathymetryScreen(scan, "", {})
     }
 }
