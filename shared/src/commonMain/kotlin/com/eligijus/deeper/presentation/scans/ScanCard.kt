@@ -32,7 +32,7 @@ fun ScanCard(
             verticalArrangement = Arrangement.spacedBy(6.dp)
         ) {
             Text(
-                text = scan.name.toString() ?: "Unnamed scan",
+                text = scan.name ?: "Unnamed scan",
                 style = MaterialTheme.typography.titleMedium
             )
 
