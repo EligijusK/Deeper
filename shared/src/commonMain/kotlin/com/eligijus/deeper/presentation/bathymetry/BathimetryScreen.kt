@@ -3,6 +3,7 @@ package com.eligijus.deeper.presentation.bathymetry
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -62,15 +63,6 @@ fun BathymetryScreen(
                 .fillMaxSize()
                 .padding(paddingValues)
         ) {
-            
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(),
-
-            ) {
-
-
-            }
             when {
                 state.isLoading -> {
                     CircularProgressIndicator(

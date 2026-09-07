@@ -24,8 +24,8 @@ fun ScanListScreen(
 
     LazyColumn(
         modifier = modifier
-            .fillMaxSize()
-            .safeDrawingPadding(),
+            .safeDrawingPadding()
+            .fillMaxSize(),
         contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {

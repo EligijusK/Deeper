@@ -20,9 +20,4 @@ val networkModule = module {
         )
     }
 
-    single<ScanRepositoryInterface> {
-        ScanRepository(
-            deeperApi = get()
-        )
-    }
 }

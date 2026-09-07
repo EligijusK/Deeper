@@ -1,0 +1,9 @@
+//
+//  Debug.xcconfig
+//  iosApp
+//
+//  Created by Eligijus Kiudys on 06/09/2026.
+//
+#include? "Config.xcconfig"
+#include? "Secrets.xcconfig"
+

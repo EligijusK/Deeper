@@ -4,7 +4,9 @@ import Shared
 
 struct ComposeView: UIViewControllerRepresentable {
     func makeUIViewController(context: Self.Context) -> UIViewController {
-        MainViewControllerKt.MainViewController()
+        MainViewControllerKt.MainViewController(
+            mapFactory: IOSMapFactory()
+        )
     }
 
     func updateUIViewController(_ uiViewController: UIViewController, context: Self.Context) {}
@@ -13,6 +15,8 @@ struct ComposeView: UIViewControllerRepresentable {
 struct ContentView: View {
     var body: some View {
         ComposeView()
+//        GoogleMapTestView()
+            .ignoresSafeArea(.keyboard)
             .ignoresSafeArea()
     }
 }
