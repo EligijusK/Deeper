@@ -3,6 +3,7 @@ package com.eligijus.deeper
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.tooling.preview.Preview
+import com.eligijus.deeper.di.koinInitialization
 import com.eligijus.deeper.di.networkModule
 import com.eligijus.deeper.di.presentationModule
 import com.eligijus.deeper.di.repositoryModule
@@ -29,14 +30,7 @@ fun App() {
     var loginResult by remember {
         mutableStateOf<LoginResult?>(null)
     }
-    KoinApplication(configuration = koinConfiguration(declaration = {
-        modules(
-            networkModule,
-            repositoryModule,
-            useCaseModule,
-            presentationModule
-        )
-    }), content = {
+    KoinApplication(configuration = koinInitialization(), content = {
 
         val viewModel = koinViewModel<LoginViewModel>()
         val state by viewModel.uiState.collectAsState()

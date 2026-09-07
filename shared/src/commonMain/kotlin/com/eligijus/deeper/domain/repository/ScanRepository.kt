@@ -10,7 +10,7 @@ import com.eligijus.deeper.domain.request.BathymetryRequestOutcome.*
 import com.eligijus.deeper.domain.request.RequestError
 
 class ScanRepository(
-    private val deeperApi: DeeperApiInterface
+    private val deeperApi: DeeperApiInterface,
 ): ScanRepositoryInterface {
 
     private val bathymetryCache = mutableMapOf<Long, BathymetryRequestOutcome>()
