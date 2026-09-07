@@ -251,7 +251,7 @@ jobs:
             -exportArchive \
             -archivePath "$RUNNER_TEMP/Deeper.xcarchive" \
             -exportPath "$RUNNER_TEMP/ipa" \
-            -exportOptionsPlist "$EXPORT_OPTIONS_PLIST"
+            -exportOptionsPlist "$GITHUB_WORKSPACE/iosApp/iosApp/ExportOptions.plist"
 
       # ======================================================
       # VERIFY
