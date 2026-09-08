@@ -10,15 +10,15 @@ on:
     branches:
       - main
       - Dev
-      
+
   workflow_dispatch:
-  
+
 jobs:
 
   # ==========================================================
   # ANDROID
   # ==========================================================
-  
+
   build:
     name: Test and Build Android
     runs-on: ubuntu-latest
@@ -59,7 +59,7 @@ jobs:
   # ==========================================================
   # IOS
   # ==========================================================
-  
+
   ios:
     name: iOS Build and Test
     runs-on: macos-latest
@@ -68,8 +68,6 @@ jobs:
       IOS_PROJECT: iosApp/iosApp.xcodeproj
       IOS_SCHEME: iosApp
       EXPORT_OPTIONS_PLIST: iosApp/ExportOptions.plist
-
-      # Your Apple Distribution team
       TEAM_ID: 3Z24U3RF5U
 
     steps:
@@ -116,14 +114,6 @@ jobs:
             -project "$IOS_PROJECT" \
             -list
 
-      # ======================================================
-      # PULL REQUEST
-      #
-      # Don't expose signing secrets to pull-request code.
-      # Instead make sure the full iOS app compiles for the
-      # simulator.
-      # ======================================================
-
       - name: Build iOS Simulator app
         if: github.event_name == 'pull_request'
         run: |
@@ -136,34 +126,25 @@ jobs:
             CODE_SIGNING_ALLOWED=NO \
             build
 
-      # ======================================================
-      # SIGNING
-      # ======================================================
-
       - name: Install Apple certificate and provisioning profile
         if: github.event_name != 'pull_request'
-
         env:
           BUILD_CERTIFICATE_BASE64: ${{ secrets.BUILD_CERTIFICATE_BASE64 }}
           P12_PASSWORD: ${{ secrets.P12_PASSWORD }}
           BUILD_PROVISION_PROFILE_BASE64: ${{ secrets.BUILD_PROVISION_PROFILE_BASE64 }}
           KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
-
         run: |
           CERTIFICATE_PATH="$RUNNER_TEMP/build_certificate.p12"
           PP_PATH="$RUNNER_TEMP/build_pp.mobileprovision"
           KEYCHAIN_PATH="$RUNNER_TEMP/app-signing.keychain-db"
           PROFILE_PLIST="$RUNNER_TEMP/profile.plist"
 
-          # Decode certificate
           echo -n "$BUILD_CERTIFICATE_BASE64" \
             | base64 --decode -o "$CERTIFICATE_PATH"
 
-          # Decode provisioning profile
           echo -n "$BUILD_PROVISION_PROFILE_BASE64" \
             | base64 --decode -o "$PP_PATH"
 
-          # Create temporary keychain
           security create-keychain \
             -p "$KEYCHAIN_PASSWORD" \
             "$KEYCHAIN_PATH"
@@ -176,7 +157,6 @@ jobs:
             -p "$KEYCHAIN_PASSWORD" \
             "$KEYCHAIN_PATH"
 
-          # Import Apple Distribution certificate
           security import "$CERTIFICATE_PATH" \
             -P "$P12_PASSWORD" \
             -A \
@@ -193,7 +173,6 @@ jobs:
             -d user \
             -s "$KEYCHAIN_PATH"
 
-          # Decode provisioning profile metadata
           security cms \
             -D \
             -i "$PP_PATH" \
@@ -215,19 +194,13 @@ jobs:
           echo "Name: $PROFILE_NAME"
           echo "UUID: $PROFILE_UUID"
 
-          # Install provisioning profile
           mkdir -p \
             "$HOME/Library/MobileDevice/Provisioning Profiles"
 
           cp "$PP_PATH" \
             "$HOME/Library/MobileDevice/Provisioning Profiles/$PROFILE_UUID.mobileprovision"
 
-          # Make profile available to following workflow steps
           echo "PROFILE_NAME=$PROFILE_NAME" >> "$GITHUB_ENV"
-
-      # ======================================================
-      # CHECK SIGNING IDENTITY
-      # ======================================================
 
       - name: Show signing identities
         if: github.event_name != 'pull_request'
@@ -236,11 +209,8 @@ jobs:
             -v \
             -p codesigning
 
-      # ======================================================
-      # CREATE XCARCHIVE
-      # ======================================================
-
       - name: Archive iOS application
+        if: github.event_name != 'pull_request'
         run: |
           xcodebuild \
             -project "$IOS_PROJECT" \
@@ -254,13 +224,8 @@ jobs:
             -showBuildTimingSummary \
             archive
 
-       # ======================================================
-      # EXPORT IPA
-      # ======================================================
-
       - name: Export IPA
         if: github.event_name != 'pull_request'
-
         run: |
           mkdir -p "$RUNNER_TEMP/ipa"
 
@@ -270,29 +235,89 @@ jobs:
             -exportPath "$RUNNER_TEMP/ipa" \
             -exportOptionsPlist "$GITHUB_WORKSPACE/iosApp/iosApp/ExportOptions.plist"
 
-      # ======================================================
-      # VERIFY
-      # ======================================================
-
       - name: Show generated IPA
         if: github.event_name != 'pull_request'
-
         run: |
           echo "Generated files:"
           find "$RUNNER_TEMP/ipa" \
             -maxdepth 2 \
             -type f \
             -print
-      # ======================================================
-      # UPLOAD IPA
-      # ======================================================
 
       - name: Upload iOS IPA
         if: github.event_name != 'pull_request'
-
         uses: actions/upload-artifact@v4
-
         with:
           name: Deeper-iOS
           path: ${{ runner.temp }}/ipa/*.ipa
           if-no-files-found: error
+
+  # ==========================================================
+  # RELEASE 1.1.0
+  # ==========================================================
+
+  release:
+    name: Create release 1.1.0
+    needs:
+      - build
+      - ios
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check whether release already exists
+        id: release_check
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view v1.1.0 \
+            --repo "$GITHUB_REPOSITORY" \
+            >/dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Download Android APK
+        if: steps.release_check.outputs.exists != 'true'
+        uses: actions/download-artifact@v7
+        with:
+          name: deeper-debug-apk
+          path: release-assets/android
+
+      - name: Download iOS IPA
+        if: steps.release_check.outputs.exists != 'true'
+        uses: actions/download-artifact@v7
+        with:
+          name: Deeper-iOS
+          path: release-assets/ios
+
+      - name: Prepare release files
+        if: steps.release_check.outputs.exists != 'true'
+        run: |
+          APK=$(find release-assets/android -type f -name '*.apk' | head -n 1)
+          IPA=$(find release-assets/ios -type f -name '*.ipa' | head -n 1)
+
+          if [ -z "$APK" ] || [ -z "$IPA" ]; then
+            echo "Both Android APK and iOS IPA are required"
+            exit 1
+          fi
+
+          mv "$APK" release-assets/Deeper-1.1.0-Android.apk
+          mv "$IPA" release-assets/Deeper-1.1.0-iOS.ipa
+
+      - name: Create GitHub release
+        if: steps.release_check.outputs.exists != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create v1.1.0 \
+            release-assets/Deeper-1.1.0-Android.apk \
+            release-assets/Deeper-1.1.0-iOS.ipa \
+            --repo "$GITHUB_REPOSITORY" \
+            --target "$GITHUB_SHA" \
+            --title "Deeper 1.1.0" \
+            --notes "Deeper 1.1.0 technical-task build. Includes compiled Android APK and iOS IPA artifacts from the successful CI workflow."
