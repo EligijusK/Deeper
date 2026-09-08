@@ -22,7 +22,10 @@ val presentationModule = module {
 
     viewModel {
         ScanListViewModel(
-            getBathymetryAvailabilityUseCase = get()
+            getBathymetryAvailabilityUseCase = get(),
+            loadCachedBathymetryStatusesUseCase = get()
         )
     }
+
+
 }

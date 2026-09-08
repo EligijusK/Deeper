@@ -2,11 +2,11 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "3e9eb5ed0c21ea7c21eaa946a5f913d9",
+    "identityHash": "cc42c148566b056748a48f87e4645e73",
     "entities": [
       {
         "tableName": "bathymetry_cache",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`scanId` INTEGER NOT NULL, `bathymetryJson` TEXT NOT NULL, `cachedAt` INTEGER NOT NULL, PRIMARY KEY(`scanId`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`scanId` INTEGER NOT NULL, `bathymetryJson` TEXT NOT NULL, `cachedAt` INTEGER NOT NULL, `hasBathymetry` INTEGER NOT NULL, PRIMARY KEY(`scanId`))",
         "fields": [
           {
             "fieldPath": "scanId",
@@ -25,6 +25,12 @@
             "columnName": "cachedAt",
             "affinity": "INTEGER",
             "notNull": true
+          },
+          {
+            "fieldPath": "hasBathymetry",
+            "columnName": "hasBathymetry",
+            "affinity": "INTEGER",
+            "notNull": true
           }
         ],
         "primaryKey": {
@@ -37,7 +43,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '3e9eb5ed0c21ea7c21eaa946a5f913d9')"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, 'cc42c148566b056748a48f87e4645e73')"
     ]
   }
 }

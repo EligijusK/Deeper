@@ -19,4 +19,8 @@ class FakeScanRepository(
         return availability[scanId]
             ?: BathymetryAvailability.UNKNOWN
     }
+
+    override suspend fun loadCachedBathymetryStatuses() {
+//        TODO("Not yet implemented")
+    }
 }

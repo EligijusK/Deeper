@@ -4,7 +4,7 @@ import org.koin.core.KoinApplication
 import org.koin.dsl.KoinConfiguration
 import org.koin.dsl.koinConfiguration
 
-fun koinInitialization(): KoinConfiguration{
+fun koinInitialization(): KoinConfiguration {
 
     return koinConfiguration(declaration = {
         modules(
@@ -15,6 +15,5 @@ fun koinInitialization(): KoinConfiguration{
             presentationModule
         )
     })
-
 }
 

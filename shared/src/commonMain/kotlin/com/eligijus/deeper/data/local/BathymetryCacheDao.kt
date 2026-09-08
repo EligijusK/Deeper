@@ -3,6 +3,7 @@ package com.eligijus.deeper.data.local
 import androidx.room3.Dao
 import androidx.room3.Query
 import androidx.room3.Upsert
+import com.eligijus.deeper.domain.model.CachedBathymetryStatus
 
 @Dao
 interface BathymetryCacheDao {
@@ -18,6 +19,22 @@ interface BathymetryCacheDao {
     suspend fun getByScanId(
         scanId: Long
     ): BathymetryCacheEntity?
+
+    @Query(
+        """
+        SELECT scanId
+        FROM bathymetry_cache
+        """
+    )
+    suspend fun getCachedScanIds(): List<Long>
+
+    @Query(
+        """
+    SELECT scanId, hasBathymetry
+    FROM bathymetry_cache
+    """
+    )
+    suspend fun getCachedStatuses(): List<CachedBathymetryStatus>
 
     @Upsert
     suspend fun upsert(

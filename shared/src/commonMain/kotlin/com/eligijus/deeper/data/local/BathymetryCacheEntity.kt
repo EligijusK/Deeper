@@ -8,5 +8,6 @@ data class BathymetryCacheEntity(
     @PrimaryKey
     val scanId: Long,
     val bathymetryJson: String,
-    val cachedAt: Long
+    val cachedAt: Long,
+    val hasBathymetry: Boolean
 )

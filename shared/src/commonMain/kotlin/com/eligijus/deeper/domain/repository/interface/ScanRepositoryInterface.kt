@@ -12,4 +12,6 @@ interface ScanRepositoryInterface {
     fun getBathymetryAvailability(
         scanId: Long
     ): BathymetryAvailability
+
+    suspend fun loadCachedBathymetryStatuses()
 }

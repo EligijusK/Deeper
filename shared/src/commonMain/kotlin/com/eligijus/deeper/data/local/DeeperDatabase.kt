@@ -18,8 +18,6 @@ import androidx.room3.RoomDatabaseConstructor
         abstract fun bathymetryCacheDao(): BathymetryCacheDao
     }
 
-    expect fun createBuilder(): RoomDatabase.Builder<DeeperDatabase>
-
 
     @Suppress("KotlinNoActualForExpect")
     expect object DeeperDatabaseConstructor :

@@ -20,4 +20,8 @@ class FakeBathymetryRepository(
     ): BathymetryAvailability {
         return BathymetryAvailability.UNKNOWN
     }
+
+    override suspend fun loadCachedBathymetryStatuses() {
+//        loadCachedStatusesCalled = true
+    }
 }

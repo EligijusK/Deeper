@@ -5,6 +5,7 @@ import com.eligijus.deeper.domain.repository.AuthRepository
 import com.eligijus.deeper.domain.repository.ScanRepository
 import com.eligijus.deeper.domain.repository.`interface`.ScanRepositoryInterface
 import com.eligijus.deeper.domain.repository.`interface`.AuthRepositoryInterface
+import com.eligijus.deeper.domain.usecase.LoadCachedBathymetryStatusesUseCase
 import org.koin.dsl.module
 
 val repositoryModule = module {
@@ -17,7 +18,14 @@ val repositoryModule = module {
 
     single<ScanRepositoryInterface> {
         ScanRepository(
-            deeperApi = get()
+            deeperApi = get(),
+            cacheDao = get()
+        )
+    }
+
+    single {
+        LoadCachedBathymetryStatusesUseCase(
+            repository = get()
         )
     }
 
