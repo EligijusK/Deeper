@@ -4,12 +4,12 @@ on:
   push:
     branches:
       - main
-      - dev
+      - Dev
 
   pull_request:
     branches:
       - main
-      - dev
+      - Dev
       
   workflow_dispatch:
   
@@ -75,6 +75,19 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+
+      - name: Create iOS Maps secrets config
+        if: github.event_name != 'pull_request'
+        env:
+          IOS_MAPS_API_KEY: ${{ secrets.IOS_MAPS_API_KEY }}
+        run: |
+          if [ -z "$IOS_MAPS_API_KEY" ]; then
+            echo "IOS_MAPS_API_KEY is not configured"
+            exit 1
+          fi
+
+          printf 'MAPS_API_KEY=%s\n' "$IOS_MAPS_API_KEY" \
+            > iosApp/Configuration/Secrets.xcconfig
 
       - name: Set up Java
         uses: actions/setup-java@v4
